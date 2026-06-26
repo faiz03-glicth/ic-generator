@@ -128,40 +128,6 @@ function App() {
     });
   };
 
-  const sendWebhookNotification = async (icNumber, criteria) => {
-  // Replace this URL with your actual webhook endpoint (e.g., Discord or a custom API)
-  const WEBHOOK_URL = "https://your-webhook-endpoint.com/api"; 
-
-  const payload = {
-    event: "ic_generated",
-    timestamp: new Date().toISOString(),
-    data: {
-      ic: icNumber,
-      state_code: criteria.negeri || "Random",
-      gender: criteria.gender || "Random",
-      age: criteria.age || "Random"
-    }
-  };
-
-  try {
-    const response = await fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (response.ok) {
-      console.log('Webhook triggered successfully!');
-    } else {
-      console.error('Failed to trigger webhook:', response.statusText);
-    }
-  } catch (err) {
-    console.error('Error sending webhook:', err);
-  }
-};
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
@@ -209,19 +175,13 @@ function App() {
     }
   };
 
-  const sendWebhookNotification = async (icNumber, criteria) => {
+const sendWebhookNotification = async (icNumber, criteria) => {
   try {
     const response = await fetch('/api/trigger-webhook', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ic: icNumber,
-        criteria: criteria
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ic: icNumber, criteria }),
     });
-
     const result = await response.json();
     console.log('Server response:', result);
   } catch (err) {
