@@ -6,7 +6,7 @@ stages:
 
 variables:
   SONAR_HOST_URL: "http://host.docker.internal:9000"
-  SONAR_TOKEN: "your_sonarqube_token_here"
+  SONAR_TOKEN: "sqp_3f7a584f0d9b2f4ddbf20ecfb981617fb3ba3dc9"
 
 build:
   stage: build
@@ -32,11 +32,7 @@ sonarqube-analysis:
   stage: code-quality
   image: sonarsource/sonar-scanner-cli:latest
   script:
-    - sonar-scanner
-      -Dsonar.projectKey=ic-generator
-      -Dsonar.sources=src
-      -Dsonar.host.url=$SONAR_HOST_URL
-      -Dsonar.token=$SONAR_TOKEN
+    - sonar-scanner -Dsonar.projectKey=ic-generator -Dsonar.sources=src -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.token=$SONAR_TOKEN
   allow_failure: true
 
 deploy:
@@ -51,4 +47,4 @@ deploy:
     paths:
       - build/
   only:
-    - main
+    - master
